@@ -4,6 +4,7 @@ List *ListCreate(){
   return calloc(1, sizeof(List));
 }
 
+
 void ListDestroy(List *list){
   LIST_FOR_EACH(list, first, next, cur){
     if (cur->prev){
