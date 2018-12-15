@@ -2,6 +2,7 @@
 #define __doublist_h__
 #include <stdlib.h>
 
+
 typedef struct DoubleList{
   void * data;
   struct DoubleList *next;
