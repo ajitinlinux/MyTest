@@ -2,6 +2,10 @@
 #define __doublist_h__
 #include <stdlib.h>
 
+/* TODO :
+Test cases
+sorting function
+*/
 
 typedef struct DoubleList{
   void * data;
