@@ -86,7 +86,7 @@ void *List_remfirst(List *list){
 void *List_remove(List *list, DoubleList *node){
   void *result = NULL;
 
-  if(!(list->first) && (list->last))
+  if(!((list->first) && (list->last)))
     goto last;
 
   if(list->first == node && list->last == node){
