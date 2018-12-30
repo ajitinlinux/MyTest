@@ -40,18 +40,18 @@ void DArray_destroy(DArray *arr){
 
 static inline int DArray_resize(DArray *arr, int new_size){
   if (new_size < 0)
-    return 0;
+    return -1;
 
   arr->max = new_size;
 
   void *data = realloc(arr->data, arr->max * sizeof(void *));
 
   if(data == NULL)
-    return 0;
+    return -1;
 
   arr->data = data;
 
-  return 1;
+  return 0;
 }
 
 int DArray_expand(DArray *arr){
@@ -62,17 +62,42 @@ int DArray_expand(DArray *arr){
 
   memset(arr->data + old_max , 0 , arr->expand_rate+1);
 
-  return 1;
+  return 0;
 }
 
 int DArray_contract(DArray *arr){
   int new_size = arr->end < (int)arr->expand_rate ?
                             (int)arr->expand_rate : arr->end;
 
-  return DArray_expand(arr, new_size);
+  return DArray_resize(arr, new_size);
 }
 
 void DArray_destr_clear(DArray *arr){
   DArray_clear(arr);
   DArray_destroy(arr);
+}
+
+int DArray_push(DArray *arr, void *val){
+  arr->data[arr->end] = val;
+  arr->end++;
+
+  if(DArray_end(arr) >= DArray_max(arr)){
+    return DArray_expand(arr);
+  }else
+    return 0;
+}
+
+void *DArray_pop(DArray *arr){
+  if(arr->end - 1 < 0)
+    return NULL;
+
+  void *val = DArray_remove(arr, arr->end -1);
+  arr->end--;
+
+  if(DArray_end(arr) > (int)arr->expand_rate
+      && DArray_end(arr) % arr->expand_rate){
+        DArray_contract(arr);
+      }
+
+  return el;
 }
